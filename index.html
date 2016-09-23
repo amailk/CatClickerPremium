@@ -21,9 +21,11 @@
     </script>
 
     <script type="text/template" data-template="display-template">
-      <h2>{{name}}</h2>
-      <h3>Count: {{clicks}}</h3>
-      <img src="{{image}}"/>
+      <div data-id={{id}}>
+        <h2>{{name}}</h2>
+        <h3>Count: {{clicks}}</h3>
+        <img src="{{image}}"/>
+      </div>
     </script>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

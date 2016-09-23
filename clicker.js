@@ -34,13 +34,20 @@ $(function() {
         var chosenCat = data.cats[cat.id];
         chosenCat.clicks ++;
 
-        data.selectedCat = cat.id;
-
         view.render();
+      },
+
+      catSelected: function(cat) {
+            data.selectedCat = cat.id;
+            view.render();
       },
 
       getSelectedCat: function() {
         return data.cats[data.selectedCat];
+      },
+
+      getSelectedCatId: function() {
+        return data.selectedCat;
       }
   };
 
@@ -57,8 +64,15 @@ $(function() {
 
       this.$catList.on('click', '.cat-list-item', function(e) {
           var cat = $(this).data();
-          controller.clickedOn(cat);
+          controller.catSelected(cat);
           return false;
+      });
+
+      this.$display.on('click', 'img', function(e) {
+        var $parent = $(this).parent();
+        var cat = $parent.data();
+        controller.clickedOn(cat);
+        return false;
       });
 
       this.render();
@@ -88,7 +102,8 @@ $(function() {
       if (selectedCat != null) {
         var newHtml = displayTemplate.replace(/{{name}}/g, selectedCat.name)
                                      .replace(/{{clicks}}/g, selectedCat.clicks)
-                                     .replace(/{{image}}/g, selectedCat.image);
+                                     .replace(/{{image}}/g, selectedCat.image)
+                                     .replace(/{{id}}/g, controller.getSelectedCatId());
         $display.append(newHtml);
       }
 
