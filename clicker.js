@@ -21,7 +21,6 @@ $(function() {
   var controller = {
 
       init: function() {
-        console.log("controller.init()");
         view.init();
       },
 
@@ -29,10 +28,9 @@ $(function() {
         return data.cats;
       },
 
-      clickedOn: function(cat) {
-        console.log("Clicked on: " + cat);
-        var chosenCat = data.cats[cat.id];
-        chosenCat.clicks ++;
+      clickedOn: function() {
+        var selectedCat = data.cats[data.selectedCat];
+        selectedCat.clicks ++;
 
         view.render();
       },
@@ -51,27 +49,25 @@ $(function() {
       }
   };
 
-
   // view
   var view = {
     init: function() {
-      console.log("view.init()");
+      // Get the cat list, and the list item templates
       this.$catList = $('.cat-list');
-      this.catTemplate = $('script[data-template="cat"]').html();
+      this.itemTemplate = $('script[data-template="item-template"]').html();
 
-      this.$display = $('.cat-display');
-      this.displayTemplate = $('script[data-template="display-template"]').html();
 
+      // Add a click listener to select a cat
       this.$catList.on('click', '.cat-list-item', function(e) {
           var cat = $(this).data();
           controller.catSelected(cat);
           return false;
       });
+      this.$display = $('.cat-display');
+      this.displayTemplate = $('script[data-template="display-template"]').html();
 
       this.$display.on('click', 'img', function(e) {
-        var $parent = $(this).parent();
-        var cat = $parent.data();
-        controller.clickedOn(cat);
+        controller.clickedOn();
         return false;
       });
 
@@ -82,14 +78,16 @@ $(function() {
 
       // Render the cat list
       var $catList = this.$catList,
-        catTemplate = this.catTemplate;
+        itemTemplate = this.itemTemplate;
+
+      // Clear out the cat list
       $catList.html('');
+      // Add all the cats back to the list with updated values
       var i = 0;
       controller.getCats().forEach(function(cat){
-          var thisTemplate = catTemplate.replace(/{{name}}/g, cat.name)
-                                        .replace(/{{clicks}}/g, cat.clicks)
+          var newHtml = itemTemplate.replace(/{{name}}/g, cat.name)
                                         .replace(/{{id}}/g, i);
-          $catList.append(thisTemplate);
+          $catList.append(newHtml);
           i++;
       });
 
@@ -102,8 +100,7 @@ $(function() {
       if (selectedCat != null) {
         var newHtml = displayTemplate.replace(/{{name}}/g, selectedCat.name)
                                      .replace(/{{clicks}}/g, selectedCat.clicks)
-                                     .replace(/{{image}}/g, selectedCat.image)
-                                     .replace(/{{id}}/g, controller.getSelectedCatId());
+                                     .replace(/{{image}}/g, selectedCat.image);
         $display.append(newHtml);
       }
 
@@ -111,5 +108,4 @@ $(function() {
   }
 
   controller.init();
-
 }());

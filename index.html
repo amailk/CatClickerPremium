@@ -9,23 +9,27 @@
 
   <body>
     <ul class="cat-list"></ul>
-
-    <div class="cat-display"></div>
-
-    <script type="text/template" data-template="cat">
+    <script type="text/template" data-template="item-template">
       <li class="cat-list-item" data-id={{id}}>
         {{name}}
-        <br>
-        {{clicks}}
       </li>
     </script>
 
+    <div class="cat-display"></div>
+    <button type="button" class="admin-button">Admin</button>
+    <form>
+      Name: <input type="text" name = "CatName" class="name-form"> <br>
+      IMG URL: <input type="text" name = "IMGURL" class="image-form"> <br>
+      Clicks: <input type="text" name = "ClickCount" class="click-form"> <br>
+      <input type="submit" class="save-button" value="Save">
+      <input type="submit" class= "cancel-button" value= "Cancel">
+    </form>
+
+
     <script type="text/template" data-template="display-template">
-      <div data-id={{id}}>
         <h2>{{name}}</h2>
         <h3>Count: {{clicks}}</h3>
         <img src="{{image}}"/>
-      </div>
     </script>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
